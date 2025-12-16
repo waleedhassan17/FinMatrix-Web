@@ -1,9 +1,5 @@
 // Accounts Payable (AP) Types
-import type { vendors, bills, billLineItems, vendorPayments } from '../schema/ap';
-
-// Vendor Types
-export type Vendor = typeof vendors.$inferSelect;
-export type NewVendor = typeof vendors.$inferInsert;
+// Note: Base types (Vendor, NewVendor, Bill, NewBill, etc.) are exported from schema/ap.ts
 
 export interface VendorListItem {
   id: string;
@@ -51,9 +47,8 @@ export interface VendorDetail extends Vendor {
   payments: VendorPaymentListItem[];
 }
 
-// Bill Types
-export type Bill = typeof bills.$inferSelect;
-export type NewBill = typeof bills.$inferInsert;
+// Bill Types - using schema types
+// Note: Bill and NewBill are exported from schema/ap.ts
 
 export interface BillListItem {
   id: string;
@@ -119,8 +114,7 @@ export interface BillDetail extends Bill {
 }
 
 // Vendor Payment Types
-export type VendorPayment = typeof vendorPayments.$inferSelect;
-export type NewVendorPayment = typeof vendorPayments.$inferInsert;
+// Note: VendorPayment and NewVendorPayment are exported from schema/ap.ts
 
 export interface VendorPaymentListItem {
   id: string;
