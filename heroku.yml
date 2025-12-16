@@ -1,0 +1,5 @@
+build:
+  languages:
+    - nodejs
+run:
+  web: cd apps/web && npm run start

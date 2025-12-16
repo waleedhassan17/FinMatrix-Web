@@ -1,0 +1,41 @@
+{
+  "name": "FinMatrix",
+  "description": "Multi-tenant Accounting Software for Pakistani SMBs",
+  "repository": "https://github.com/yourusername/finmatrix-mvp",
+  "keywords": ["accounting", "nextjs", "typescript", "postgresql"],
+  "stack": "heroku-24",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": {
+      "description": "PostgreSQL connection string",
+      "required": true
+    },
+    "NEXTAUTH_URL": {
+      "description": "The URL of your deployed application",
+      "required": true
+    },
+    "NEXTAUTH_SECRET": {
+      "description": "A secret key for NextAuth.js (generate with: openssl rand -base64 32)",
+      "generator": "secret"
+    },
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  }
+}
