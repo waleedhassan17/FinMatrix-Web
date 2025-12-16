@@ -1,6 +1,6 @@
 // Accounts Payable (AP) Types
 // Note: Base types (Vendor, NewVendor, Bill, NewBill, etc.) are exported from schema/ap.ts
-import type { Vendor } from '../schema/ap';
+import type { Vendor, Bill } from '../schema/ap';
 
 export interface VendorListItem {
   id: string;
