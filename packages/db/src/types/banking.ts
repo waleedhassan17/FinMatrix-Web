@@ -227,7 +227,7 @@ export interface ReconciliationWithDetails extends BankReconciliation {
   clearedItemCount: number;
 }
 
-export interface ReconciliationSummary {
+export interface BankReconciliationSummary {
   beginningBalance: number;
   clearedDeposits: number;
   clearedWithdrawals: number;

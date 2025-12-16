@@ -24,7 +24,7 @@ import type {
   ImportBatchSummary,
   ImportedTransactionWithMatch,
   ReconciliationWithDetails,
-  ReconciliationSummary,
+  BankReconciliationSummary,
   OutstandingItem,
   BankingDashboardSummary,
   BankingAlert,
@@ -818,7 +818,7 @@ export async function updateReconciliationItem(
 export async function calculateReconciliationTotals(
   tenantId: string,
   reconciliationId: string
-): Promise<ReconciliationSummary> {
+): Promise<BankReconciliationSummary> {
   const reconciliation = await getReconciliationById(tenantId, reconciliationId);
   if (!reconciliation) throw new Error('Reconciliation not found');
 
