@@ -15,13 +15,29 @@ import {
   getGSTSummaryData,
   getTopCustomersData,
   getActionItemsData,
+  // Live data queries
+  getDashboardDataLive,
+  getCashBalanceMetricLive,
+  getAccountsReceivableMetricLive,
+  getAccountsPayableMetricLive,
+  getNetIncomeMetricLive,
+  getTopCustomersDataLive,
+  getActionItemsDataLive,
   db,
 } from '@finmatrix/db';
 
-// Helper to get the current organization schema
+// Feature flag to switch between sample and live data
+const USE_LIVE_DATA = process.env.DASHBOARD_USE_LIVE_DATA === 'true' || true;
+
+// Helper to get the current organization ID (tenant)
+async function getTenantId(userId: string): Promise<string | null> {
+  const session = await getSession();
+  // Use actual organization ID from session
+  return session?.user?.currentOrganizationId || null;
+}
+
+// Helper to get the current organization schema (legacy - for sample data)
 async function getTenantSchema(userId: string): Promise<string | null> {
-  // In a real implementation, this would fetch the user's current organization
-  // and return the tenant schema name
   return 'tenant_default';
 }
 
@@ -41,6 +57,20 @@ export async function fetchDashboardData() {
       return { success: false, error: 'Unauthorized' };
     }
 
+    // Use live data with actual tenant ID
+    if (USE_LIVE_DATA && session.user.currentOrganizationId) {
+      const tenantId = session.user.currentOrganizationId;
+      const data = await getDashboardDataLive(db, tenantId);
+      
+      return {
+        success: true,
+        data,
+        timestamp: new Date().toISOString(),
+        source: 'live',
+      };
+    }
+
+    // Fallback to sample data
     const tenantSchema = await getTenantSchema(session.user.id);
     if (!tenantSchema) {
       return { success: false, error: 'No organization selected' };
@@ -52,6 +82,7 @@ export async function fetchDashboardData() {
       success: true,
       data,
       timestamp: new Date().toISOString(),
+      source: 'sample',
     };
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
@@ -69,17 +100,24 @@ export async function fetchCashBalance() {
       return { success: false, error: 'Unauthorized' };
     }
 
+    if (!await checkPermission(session.user.id, 'view:cash-balance')) {
+      return { success: false, error: 'Permission denied' };
+    }
+
+    // Use live data with actual tenant ID
+    if (USE_LIVE_DATA && session.user.currentOrganizationId) {
+      const data = await getCashBalanceMetricLive(db, session.user.currentOrganizationId);
+      return { success: true, data, timestamp: new Date().toISOString(), source: 'live' };
+    }
+
+    // Fallback to sample data
     const tenantSchema = await getTenantSchema(session.user.id);
     if (!tenantSchema) {
       return { success: false, error: 'No organization selected' };
     }
 
-    if (!await checkPermission(session.user.id, 'view:cash-balance')) {
-      return { success: false, error: 'Permission denied' };
-    }
-
     const data = await getCashBalanceMetric(db, tenantSchema);
-    return { success: true, data, timestamp: new Date().toISOString() };
+    return { success: true, data, timestamp: new Date().toISOString(), source: 'sample' };
   } catch (error) {
     console.error('Error fetching cash balance:', error);
     return { success: false, error: 'Failed to fetch cash balance' };
@@ -96,17 +134,24 @@ export async function fetchAccountsReceivable() {
       return { success: false, error: 'Unauthorized' };
     }
 
+    if (!await checkPermission(session.user.id, 'view:accounts-receivable')) {
+      return { success: false, error: 'Permission denied' };
+    }
+
+    // Use live data with actual tenant ID
+    if (USE_LIVE_DATA && session.user.currentOrganizationId) {
+      const data = await getAccountsReceivableMetricLive(db, session.user.currentOrganizationId);
+      return { success: true, data, timestamp: new Date().toISOString(), source: 'live' };
+    }
+
+    // Fallback to sample data
     const tenantSchema = await getTenantSchema(session.user.id);
     if (!tenantSchema) {
       return { success: false, error: 'No organization selected' };
     }
 
-    if (!await checkPermission(session.user.id, 'view:accounts-receivable')) {
-      return { success: false, error: 'Permission denied' };
-    }
-
     const data = await getAccountsReceivableMetric(db, tenantSchema);
-    return { success: true, data, timestamp: new Date().toISOString() };
+    return { success: true, data, timestamp: new Date().toISOString(), source: 'sample' };
   } catch (error) {
     console.error('Error fetching accounts receivable:', error);
     return { success: false, error: 'Failed to fetch accounts receivable' };
@@ -123,17 +168,24 @@ export async function fetchAccountsPayable() {
       return { success: false, error: 'Unauthorized' };
     }
 
+    if (!await checkPermission(session.user.id, 'view:accounts-payable')) {
+      return { success: false, error: 'Permission denied' };
+    }
+
+    // Use live data with actual tenant ID
+    if (USE_LIVE_DATA && session.user.currentOrganizationId) {
+      const data = await getAccountsPayableMetricLive(db, session.user.currentOrganizationId);
+      return { success: true, data, timestamp: new Date().toISOString(), source: 'live' };
+    }
+
+    // Fallback to sample data
     const tenantSchema = await getTenantSchema(session.user.id);
     if (!tenantSchema) {
       return { success: false, error: 'No organization selected' };
     }
 
-    if (!await checkPermission(session.user.id, 'view:accounts-payable')) {
-      return { success: false, error: 'Permission denied' };
-    }
-
     const data = await getAccountsPayableMetric(db, tenantSchema);
-    return { success: true, data, timestamp: new Date().toISOString() };
+    return { success: true, data, timestamp: new Date().toISOString(), source: 'sample' };
   } catch (error) {
     console.error('Error fetching accounts payable:', error);
     return { success: false, error: 'Failed to fetch accounts payable' };
@@ -150,17 +202,24 @@ export async function fetchNetIncome() {
       return { success: false, error: 'Unauthorized' };
     }
 
+    if (!await checkPermission(session.user.id, 'view:profit-loss')) {
+      return { success: false, error: 'Permission denied' };
+    }
+
+    // Use live data with actual tenant ID
+    if (USE_LIVE_DATA && session.user.currentOrganizationId) {
+      const data = await getNetIncomeMetricLive(db, session.user.currentOrganizationId);
+      return { success: true, data, timestamp: new Date().toISOString(), source: 'live' };
+    }
+
+    // Fallback to sample data
     const tenantSchema = await getTenantSchema(session.user.id);
     if (!tenantSchema) {
       return { success: false, error: 'No organization selected' };
     }
 
-    if (!await checkPermission(session.user.id, 'view:profit-loss')) {
-      return { success: false, error: 'Permission denied' };
-    }
-
     const data = await getNetIncomeMetric(db, tenantSchema);
-    return { success: true, data, timestamp: new Date().toISOString() };
+    return { success: true, data, timestamp: new Date().toISOString(), source: 'sample' };
   } catch (error) {
     console.error('Error fetching net income:', error);
     return { success: false, error: 'Failed to fetch net income' };

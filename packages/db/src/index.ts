@@ -33,6 +33,9 @@ export * from './types/fbr';
 // Dashboard queries
 export * from './queries/dashboard';
 
+// Dashboard LIVE queries (real database data)
+export * from './queries/dashboard-live';
+
 // GL (General Ledger) queries
 export * from './queries/gl';
 
@@ -44,6 +47,9 @@ export * from './queries/ap';
 
 // FBR (Federal Board of Revenue) Compliance queries
 export * from './queries/fbr';
+
+// FBR Auto-populate functions (Form A from invoices, Form B from bills)
+export * from './queries/fbr-auto-populate';
 
 // Banking queries
 export * from './queries/banking';
