@@ -8,11 +8,13 @@ dotenv.config({ path: '../../.env' });
 
 // Create a connection pool
 const createPool = (connectionString: string) => {
+  const isProduction = process.env.NODE_ENV === 'production';
   return new Pool({
     connectionString,
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
+    ssl: isProduction ? { rejectUnauthorized: false } : false,
   });
 };
 
