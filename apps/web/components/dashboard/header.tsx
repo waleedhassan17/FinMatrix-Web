@@ -71,7 +71,7 @@ export function Header({ user, currentOrg, organizations = [], onOrgChange }: He
 
   return (
     <>
-      <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30 shadow-sm">
+      <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between pl-16 pr-4 lg:px-6 sticky top-0 z-30 shadow-sm">
         {/* Left Section - Org Selector */}
         <div className="flex items-center gap-4">
           <div className="relative">

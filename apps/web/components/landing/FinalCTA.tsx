@@ -47,7 +47,7 @@ export function FinalCTA() {
 
           {/* Headline */}
           <motion.h2
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 px-2"
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ delay: 0.2 }}
@@ -61,7 +61,7 @@ export function FinalCTA() {
 
           {/* Subheadline */}
           <motion.p
-            className="text-lg sm:text-xl text-blue-100 mb-8 max-w-2xl mx-auto"
+            className="text-base sm:text-lg md:text-xl text-blue-100 mb-6 sm:mb-8 max-w-2xl mx-auto px-2"
             initial={{ opacity: 0, y: 10 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             transition={{ delay: 0.3 }}
@@ -71,7 +71,7 @@ export function FinalCTA() {
 
           {/* Features */}
           <motion.div
-            className="flex flex-wrap justify-center gap-4 mb-10"
+            className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 px-4"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.4 }}

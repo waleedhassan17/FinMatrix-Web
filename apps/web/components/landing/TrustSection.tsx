@@ -133,10 +133,10 @@ export function TrustSection() {
               whileHover={{ y: -4, scale: 1.02 }}
               className="group"
             >
-              <div className={`relative bg-gradient-to-br ${stat.bgGradient} rounded-2xl p-6 h-full border border-white/50 shadow-sm hover:shadow-lg transition-all duration-300`}>
+              <div className={`relative bg-gradient-to-br ${stat.bgGradient} rounded-2xl p-4 sm:p-6 h-full border border-white/50 shadow-sm hover:shadow-lg transition-all duration-300`}>
                 {/* Icon */}
                 <motion.div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-4 shadow-lg`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-3 sm:mb-4 shadow-lg`}
                   whileHover={{ scale: 1.05, rotate: 5 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                 >
@@ -144,7 +144,7 @@ export function TrustSection() {
                 </motion.div>
 
                 {/* Value */}
-                <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1">
                   <AnimatedCounter
                     value={stat.value}
                     suffix={stat.suffix}

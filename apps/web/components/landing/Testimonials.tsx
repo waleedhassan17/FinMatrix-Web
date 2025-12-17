@@ -78,7 +78,7 @@ export function Testimonials() {
           </motion.p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
@@ -93,7 +93,7 @@ export function Testimonials() {
               whileHover={{ y: -8 }}
               className="group"
             >
-              <div className="relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 h-full hover:shadow-xl transition-shadow duration-300">
+              <div className="relative bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 h-full hover:shadow-xl transition-shadow duration-300">
                 {/* Quote icon */}
                 <Quote className="absolute top-6 right-6 h-10 w-10 text-gray-100" />
 

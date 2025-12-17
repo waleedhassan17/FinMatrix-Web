@@ -136,68 +136,70 @@ function JournalEntryRow({
   const canReverse = entry.status === 'posted';
 
   return (
-    <div className="group grid grid-cols-12 gap-4 items-center py-3 px-4 hover:bg-slate-50 border-b border-slate-100 transition-colors">
-      {/* Entry Number */}
-      <div className="col-span-2">
-        <button onClick={onView} className="font-mono text-sm text-blue-600 hover:underline">
-          {entry.entryNumber}
-        </button>
-      </div>
+    <>
+      {/* Desktop Layout */}
+      <div className="hidden md:grid group grid-cols-12 gap-4 items-center py-3 px-4 hover:bg-slate-50 border-b border-slate-100 transition-colors">
+        {/* Entry Number */}
+        <div className="col-span-2">
+          <button onClick={onView} className="font-mono text-sm text-blue-600 hover:underline">
+            {entry.entryNumber}
+          </button>
+        </div>
 
-      {/* Date */}
-      <div className="col-span-1 text-sm text-slate-600">
-        {format(new Date(entry.date), 'MMM d, yyyy')}
-      </div>
+        {/* Date */}
+        <div className="col-span-1 text-sm text-slate-600">
+          {format(new Date(entry.date), 'MMM d, yyyy')}
+        </div>
 
-      {/* Memo */}
-      <div className="col-span-3 text-sm text-slate-700 truncate" title={entry.memo || ''}>
-        {entry.memo || <span className="text-slate-400 italic">No memo</span>}
-      </div>
+        {/* Memo */}
+        <div className="col-span-3 text-sm text-slate-700 truncate" title={entry.memo || ''}>
+          {entry.memo || <span className="text-slate-400 italic">No memo</span>}
+        </div>
 
-      {/* Accounts */}
-      <div className="col-span-2 text-xs text-slate-500 truncate" title={linesSummary}>
-        {linesSummary}
-      </div>
+        {/* Accounts */}
+        <div className="col-span-2 text-xs text-slate-500 truncate" title={linesSummary}>
+          {linesSummary}
+        </div>
 
-      {/* Amount */}
-      <div className="col-span-1 text-sm font-mono text-right text-slate-900">
-        {formatCurrency(entry.totalDebit)}
-      </div>
+        {/* Amount */}
+        <div className="col-span-1 text-sm font-mono text-right text-slate-900">
+          {formatCurrency(entry.totalDebit)}
+        </div>
 
-      {/* Status */}
-      <div className="col-span-1">
-        <StatusBadge status={entry.status} />
-      </div>
+        {/* Status */}
+        <div className="col-span-1">
+          <StatusBadge status={entry.status} />
+        </div>
 
-      {/* Actions */}
-      <div className="col-span-2 flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={onView}>
-          <Eye className="h-4 w-4" />
-        </Button>
-
-        {canEdit && (
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={onEdit}>
-            <Edit2 className="h-4 w-4" />
+        {/* Actions */}
+        <div className="col-span-2 flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={onView}>
+            <Eye className="h-4 w-4" />
           </Button>
-        )}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
+          {canEdit && (
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={onEdit}>
+              <Edit2 className="h-4 w-4" />
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={onView}>
-              <Eye className="mr-2 h-4 w-4" />
-              View Details
-            </DropdownMenuItem>
-            {canEdit && (
-              <DropdownMenuItem onClick={onEdit}>
-                <Edit2 className="mr-2 h-4 w-4" />
-                Edit Entry
+          )}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={onView}>
+                <Eye className="mr-2 h-4 w-4" />
+                View Details
               </DropdownMenuItem>
-            )}
+              {canEdit && (
+                <DropdownMenuItem onClick={onEdit}>
+                  <Edit2 className="mr-2 h-4 w-4" />
+                  Edit Entry
+                </DropdownMenuItem>
+              )}
             <DropdownMenuItem onClick={onCopy}>
               <Copy className="mr-2 h-4 w-4" />
               Duplicate Entry
@@ -219,6 +221,29 @@ function JournalEntryRow({
         </DropdownMenu>
       </div>
     </div>
+
+      {/* Mobile Layout */}
+      <div className="md:hidden p-3 border-b border-slate-100 hover:bg-slate-50" onClick={onView}>
+        <div className="flex items-center justify-between mb-2">
+          <button className="font-mono text-sm text-blue-600 hover:underline">
+            {entry.entryNumber}
+          </button>
+          <StatusBadge status={entry.status} />
+        </div>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-sm text-slate-600">
+            {format(new Date(entry.date), 'MMM d, yyyy')}
+          </span>
+          <span className="text-sm font-mono text-slate-900">
+            {formatCurrency(entry.totalDebit)}
+          </span>
+        </div>
+        <div className="text-sm text-slate-700 truncate">
+          {entry.memo || <span className="text-slate-400 italic">No memo</span>}
+        </div>
+        <div className="text-xs text-slate-500 mt-1 truncate">{linesSummary}</div>
+      </div>
+    </>
   );
 }
 
@@ -372,19 +397,19 @@ export function JournalEntryList({
 
         {/* Export */}
         <Button variant="outline" size="sm" onClick={onExport}>
-          <Download className="h-4 w-4 mr-2" />
-          Export
+          <Download className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">Export</span>
         </Button>
 
         {/* Create New */}
         <Button size="sm" onClick={onCreateNew}>
-          <Plus className="h-4 w-4 mr-2" />
-          New Entry
+          <Plus className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">New Entry</span>
         </Button>
       </div>
 
-      {/* Table Header */}
-      <div className="grid grid-cols-12 gap-4 items-center py-2 px-4 bg-slate-50 text-sm font-medium text-slate-600 border-b border-slate-200">
+      {/* Table Header - Desktop only */}
+      <div className="hidden md:grid grid-cols-12 gap-4 items-center py-2 px-4 bg-slate-50 text-sm font-medium text-slate-600 border-b border-slate-200">
         <div className="col-span-2 flex items-center gap-1 cursor-pointer hover:text-slate-900">
           Entry #
           <ArrowUpDown className="h-3 w-3" />

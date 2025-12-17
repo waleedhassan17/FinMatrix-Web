@@ -90,7 +90,7 @@ function PricingCard({ plan, index, isInView }: { plan: (typeof plans)[0]; index
       )}
 
       <motion.div
-        className={`relative bg-white rounded-2xl p-8 h-full flex flex-col ${
+        className={`relative bg-white rounded-2xl p-5 sm:p-8 h-full flex flex-col ${
           plan.featured
             ? 'border-2 border-purple-500 shadow-xl'
             : 'border border-gray-200 shadow-sm'
@@ -101,7 +101,7 @@ function PricingCard({ plan, index, isInView }: { plan: (typeof plans)[0]; index
         {/* Badge */}
         {plan.badge && (
           <motion.div
-            className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-sm font-medium ${
+            className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap ${
               plan.featured
                 ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
                 : 'bg-gray-100 text-gray-700'
@@ -121,11 +121,11 @@ function PricingCard({ plan, index, isInView }: { plan: (typeof plans)[0]; index
         {/* Price */}
         <div className="mt-4 mb-6">
           {plan.price === 'Custom' ? (
-            <span className="text-3xl font-bold text-gray-900">Custom</span>
+            <span className="text-2xl sm:text-3xl font-bold text-gray-900">Custom</span>
           ) : (
             <>
-              <span className="text-sm text-gray-500">PKR</span>
-              <span className="text-4xl font-bold text-gray-900 ml-1">{plan.price}</span>
+              <span className="text-xs sm:text-sm text-gray-500">PKR</span>
+              <span className="text-2xl sm:text-4xl font-bold text-gray-900 ml-1">{plan.price}</span>
               <span className="text-gray-500">/month</span>
             </>
           )}
@@ -215,7 +215,7 @@ export function Pricing() {
           </motion.p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
           {plans.map((plan, index) => (
             <PricingCard key={index} plan={plan} index={index} isInView={isInView} />
           ))}

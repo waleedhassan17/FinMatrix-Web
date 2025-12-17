@@ -82,10 +82,10 @@ export function Footer() {
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div ref={ref} className="grid lg:grid-cols-5 gap-12 pb-12 border-b border-gray-800">
+        <div ref={ref} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-gray-800">
           {/* Brand Column */}
           <motion.div
-            className="lg:col-span-2"
+            className="col-span-2 md:col-span-3 lg:col-span-2"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.1 }}
@@ -154,7 +154,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <motion.div
-          className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+          className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ delay: 0.5 }}

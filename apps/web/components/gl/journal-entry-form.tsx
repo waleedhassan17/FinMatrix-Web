@@ -151,33 +151,35 @@ function LineItemRow({
   };
 
   return (
-    <div className="grid grid-cols-12 gap-2 items-center py-2 px-3 hover:bg-slate-50 rounded-md group">
-      {/* Line Number */}
-      <div className="col-span-1 text-sm text-slate-400 font-mono">{index + 1}</div>
+    <>
+      {/* Desktop Layout */}
+      <div className="hidden md:grid grid-cols-12 gap-2 items-center py-2 px-3 hover:bg-slate-50 rounded-md group">
+        {/* Line Number */}
+        <div className="col-span-1 text-sm text-slate-400 font-mono">{index + 1}</div>
 
-      {/* Account */}
-      <div className="col-span-4">
-        <Select
-          value={line.accountId || ''}
-          onValueChange={(value) => onUpdate(line.tempId, 'accountId', value)}
-        >
-          <SelectTrigger className="h-9">
-            <SelectValue placeholder="Select account" />
-          </SelectTrigger>
-          <SelectContent className="max-h-[300px]">
-            {accounts.map((account) => {
-              const config = ACCOUNT_TYPE_CONFIGS[account.type];
-              return (
-                <SelectItem key={account.id} value={account.id}>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs text-slate-500">{account.accountNumber}</span>
-                    <span>{account.name}</span>
-                    <span
-                      className={cn('text-xs px-1.5 py-0.5 rounded', config.bgColor, config.color)}
-                    >
-                      {config.label}
-                    </span>
-                  </div>
+        {/* Account */}
+        <div className="col-span-4">
+          <Select
+            value={line.accountId || ''}
+            onValueChange={(value) => onUpdate(line.tempId, 'accountId', value)}
+          >
+            <SelectTrigger className="h-9">
+              <SelectValue placeholder="Select account" />
+            </SelectTrigger>
+            <SelectContent className="max-h-[300px]">
+              {accounts.map((account) => {
+                const config = ACCOUNT_TYPE_CONFIGS[account.type];
+                return (
+                  <SelectItem key={account.id} value={account.id}>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs text-slate-500">{account.accountNumber}</span>
+                      <span>{account.name}</span>
+                      <span
+                        className={cn('text-xs px-1.5 py-0.5 rounded', config.bgColor, config.color)}
+                      >
+                        {config.label}
+                      </span>
+                    </div>
                 </SelectItem>
               );
             })}
@@ -237,6 +239,88 @@ function LineItemRow({
         </Button>
       </div>
     </div>
+
+      {/* Mobile Layout */}
+      <div className="md:hidden p-3 border border-slate-200 rounded-lg mb-2 bg-white">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-slate-600">Line {index + 1}</span>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className={cn('h-8 w-8 p-0', !canRemove && 'invisible')}
+            onClick={() => onRemove(line.tempId)}
+            disabled={!canRemove}
+          >
+            <Trash2 className="h-4 w-4 text-slate-400 hover:text-red-500" />
+          </Button>
+        </div>
+        
+        {/* Account Select */}
+        <div className="mb-2">
+          <Label className="text-xs text-slate-500">Account</Label>
+          <Select
+            value={line.accountId || ''}
+            onValueChange={(value) => onUpdate(line.tempId, 'accountId', value)}
+          >
+            <SelectTrigger className="h-9 mt-1">
+              <SelectValue placeholder="Select account" />
+            </SelectTrigger>
+            <SelectContent className="max-h-[300px]">
+              {accounts.map((account) => {
+                const config = ACCOUNT_TYPE_CONFIGS[account.type];
+                return (
+                  <SelectItem key={account.id} value={account.id}>
+                    <div className="flex items-center gap-1 flex-wrap">
+                      <span className="font-mono text-xs text-slate-500">{account.accountNumber}</span>
+                      <span className="text-sm">{account.name}</span>
+                    </div>
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Debit and Credit */}
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <div>
+            <Label className="text-xs text-slate-500">Debit</Label>
+            <Input
+              type="text"
+              placeholder="0.00"
+              value={debitInput}
+              onChange={(e) => handleDebitChange(e.target.value)}
+              onBlur={handleDebitBlur}
+              className="h-9 text-right font-mono mt-1"
+            />
+          </div>
+          <div>
+            <Label className="text-xs text-slate-500">Credit</Label>
+            <Input
+              type="text"
+              placeholder="0.00"
+              value={creditInput}
+              onChange={(e) => handleCreditChange(e.target.value)}
+              onBlur={handleCreditBlur}
+              className="h-9 text-right font-mono mt-1"
+            />
+          </div>
+        </div>
+
+        {/* Memo */}
+        <div>
+          <Label className="text-xs text-slate-500">Memo</Label>
+          <Input
+            type="text"
+            placeholder="Line memo"
+            value={line.memo || ''}
+            onChange={(e) => onUpdate(line.tempId, 'memo', e.target.value)}
+            className="h-9 text-sm mt-1"
+          />
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -511,7 +595,7 @@ export function JournalEntryForm({
         )}
 
         {/* Header Fields */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="space-y-2">
             <Label htmlFor="date">Date *</Label>
             <Input
@@ -533,7 +617,7 @@ export function JournalEntryForm({
             />
           </div>
 
-          <div className="col-span-2 space-y-2">
+          <div className="sm:col-span-2 space-y-2">
             <Label htmlFor="memo">Memo / Description</Label>
             <Input
               id="memo"
@@ -548,14 +632,19 @@ export function JournalEntryForm({
 
         {/* Line Items */}
         <div className="space-y-2">
-          {/* Header Row */}
-          <div className="grid grid-cols-12 gap-2 px-3 py-2 bg-slate-100 rounded-md text-sm font-medium text-slate-600">
+          {/* Header Row - Desktop Only */}
+          <div className="hidden md:grid grid-cols-12 gap-2 px-3 py-2 bg-slate-100 rounded-md text-sm font-medium text-slate-600">
             <div className="col-span-1">#</div>
             <div className="col-span-4">Account</div>
             <div className="col-span-2 text-right">Debit</div>
             <div className="col-span-2 text-right">Credit</div>
             <div className="col-span-2">Memo</div>
             <div className="col-span-1"></div>
+          </div>
+
+          {/* Mobile Header */}
+          <div className="md:hidden px-3 py-2 bg-slate-100 rounded-md text-sm font-medium text-slate-600">
+            Journal Lines ({lines.length})
           </div>
 
           {/* Line Rows */}
@@ -618,18 +707,19 @@ export function JournalEntryForm({
         )}
       </CardContent>
 
-      <CardFooter className="flex justify-between border-t bg-slate-50">
-        <Button type="button" variant="ghost" onClick={onCancel} disabled={isSubmitting}>
+      <CardFooter className="flex flex-col sm:flex-row justify-between gap-3 border-t bg-slate-50">
+        <Button type="button" variant="ghost" onClick={onCancel} disabled={isSubmitting} className="w-full sm:w-auto order-2 sm:order-1">
           <X className="h-4 w-4 mr-2" />
           Cancel
         </Button>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto order-1 sm:order-2">
           <Button
             type="button"
             variant="outline"
             onClick={handleSaveDraft}
             disabled={isSubmitting || (entry?.status !== 'draft' && entry?.status !== undefined)}
+            className="w-full sm:w-auto"
           >
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
             Save Draft
@@ -639,7 +729,7 @@ export function JournalEntryForm({
             type="button"
             onClick={handlePost}
             disabled={isSubmitting || !isBalanced}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
           >
             {isSubmitting ? <Spinner size="sm" className="mr-2" /> : <Send className="h-4 w-4 mr-2" />}
             Post Entry

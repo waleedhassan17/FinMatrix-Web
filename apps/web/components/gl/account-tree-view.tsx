@@ -512,9 +512,9 @@ export function AccountTreeView({
   return (
     <div className="flex flex-col h-full">
       {/* Toolbar */}
-      <div className="flex items-center gap-3 p-4 border-b border-slate-200 bg-white">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 p-3 sm:p-4 border-b border-slate-200 bg-white">
         {/* Search */}
-        <div className="relative flex-1 max-w-sm">
+        <div className="relative flex-1 min-w-[150px] sm:max-w-sm order-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
             placeholder="Search accounts..."
@@ -527,9 +527,11 @@ export function AccountTreeView({
         {/* Type Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4 mr-2" />
-              {filterType === 'all' ? 'All Types' : ACCOUNT_TYPE_CONFIGS[filterType].label}
+            <Button variant="outline" size="sm" className="order-2">
+              <Filter className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">
+                {filterType === 'all' ? 'All Types' : ACCOUNT_TYPE_CONFIGS[filterType].label}
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -544,30 +546,30 @@ export function AccountTreeView({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Expand/Collapse */}
-        <Button variant="ghost" size="sm" onClick={handleExpandAll}>
+        {/* Expand/Collapse - Hidden on mobile */}
+        <Button variant="ghost" size="sm" onClick={handleExpandAll} className="hidden sm:inline-flex order-3">
           Expand All
         </Button>
-        <Button variant="ghost" size="sm" onClick={handleCollapseAll}>
+        <Button variant="ghost" size="sm" onClick={handleCollapseAll} className="hidden sm:inline-flex order-4">
           Collapse All
         </Button>
 
-        <div className="flex-1" />
+        <div className="hidden sm:block flex-1 order-5" />
 
-        {/* Import/Export */}
-        <Button variant="outline" size="sm" onClick={onImport}>
-          <Upload className="h-4 w-4 mr-2" />
-          Import
+        {/* Import/Export - Icons only on mobile */}
+        <Button variant="outline" size="sm" onClick={onImport} className="order-6">
+          <Upload className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">Import</span>
         </Button>
-        <Button variant="outline" size="sm" onClick={onExport}>
-          <Download className="h-4 w-4 mr-2" />
-          Export
+        <Button variant="outline" size="sm" onClick={onExport} className="order-7">
+          <Download className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">Export</span>
         </Button>
 
         {/* Add Account */}
-        <Button size="sm" onClick={() => onAddAccount?.()}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Account
+        <Button size="sm" onClick={() => onAddAccount?.()} className="order-8">
+          <Plus className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">Add Account</span>
         </Button>
       </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@finmatrix/ui';
@@ -26,6 +26,8 @@ import {
   Wallet,
   ClipboardList,
   Building2,
+  Menu,
+  X,
 } from 'lucide-react';
 
 interface NavItem {
@@ -138,7 +140,25 @@ const quickActions = [
 export function Sidebar() {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>(['Customers & Sales']);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileOpen]);
 
   const toggleExpanded = (title: string) => {
     setExpandedItems((prev) =>
@@ -150,22 +170,10 @@ export function Sidebar() {
   const isParentActive = (children: { href: string }[]) =>
     children.some((child) => pathname.startsWith(child.href));
 
-  return (
+  const sidebarContent = (
     <>
-      {/* Spacer div to push content */}
-      <div className={cn(
-        'flex-shrink-0 transition-all duration-300',
-        isCollapsed ? 'w-[72px]' : 'w-64'
-      )} />
-      
-      <aside
-        className={cn(
-          'fixed left-0 top-0 z-40 h-screen bg-gradient-to-b from-[#1a365d] to-[#0f2544] text-white transition-all duration-300 flex flex-col shadow-xl',
-          isCollapsed ? 'w-[72px]' : 'w-64'
-        )}
-      >
       {/* Logo */}
-      <div className="flex items-center h-16 px-4 border-b border-white/10">
+      <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
         <Link href="/dashboard" className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
             <BarChart3 className="h-5 w-5 text-white" />
@@ -174,6 +182,13 @@ export function Sidebar() {
             <span className="text-lg font-bold">FinMatrix</span>
           )}
         </Link>
+        {/* Mobile close button */}
+        <button
+          onClick={() => setIsMobileOpen(false)}
+          className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+        >
+          <X className="h-5 w-5 text-white" />
+        </button>
       </div>
 
       {/* Navigation */}
@@ -264,10 +279,10 @@ export function Sidebar() {
         </div>
       )}
 
-      {/* Collapse Toggle */}
+      {/* Collapse Toggle - Desktop only */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-20 h-6 w-6 rounded-full bg-[#1a365d] border-2 border-slate-200 shadow-md flex items-center justify-center hover:bg-[#2d4a7c] transition-colors"
+        className="hidden lg:flex absolute -right-3 top-20 h-6 w-6 rounded-full bg-[#1a365d] border-2 border-slate-200 shadow-md items-center justify-center hover:bg-[#2d4a7c] transition-colors"
       >
         {isCollapsed ? (
           <ChevronRight className="h-3 w-3 text-white" />
@@ -275,7 +290,47 @@ export function Sidebar() {
           <ChevronLeft className="h-3 w-3 text-white" />
         )}
       </button>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile hamburger button */}
+      <button
+        onClick={() => setIsMobileOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-[#1a365d] text-white shadow-lg hover:bg-[#2d4a7c] transition-colors"
+        aria-label="Open menu"
+      >
+        <Menu className="h-6 w-6" />
+      </button>
+
+      {/* Mobile overlay */}
+      {isMobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Desktop spacer */}
+      <div className={cn(
+        'hidden lg:block flex-shrink-0 transition-all duration-300',
+        isCollapsed ? 'w-[72px]' : 'w-64'
+      )} />
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          'fixed left-0 top-0 z-50 h-screen bg-gradient-to-b from-[#1a365d] to-[#0f2544] text-white transition-all duration-300 flex flex-col shadow-xl',
+          // Mobile: full width, slide in/out
+          'w-72 lg:w-auto',
+          isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
+          // Desktop: collapsible width
+          isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'
+        )}
+      >
+        {sidebarContent}
+      </aside>
     </>
   );
 }

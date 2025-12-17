@@ -94,7 +94,7 @@ export function ValueProps() {
           </motion.p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
           {valueProps.map((prop, index) => (
             <motion.div
               key={index}
@@ -114,7 +114,7 @@ export function ValueProps() {
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-3xl blur-xl" />
               )}
 
-              <div className={`relative h-full bg-gradient-to-br ${prop.bgGradient} rounded-2xl p-8 border ${prop.highlight ? 'border-purple-200 shadow-xl' : 'border-gray-100 shadow-sm'} hover:shadow-xl transition-all duration-300`}>
+              <div className={`relative h-full bg-gradient-to-br ${prop.bgGradient} rounded-2xl p-5 sm:p-8 border ${prop.highlight ? 'border-purple-200 shadow-xl' : 'border-gray-100 shadow-sm'} hover:shadow-xl transition-all duration-300`}>
                 {/* Icon */}
                 <motion.div
                   className={`w-14 h-14 rounded-xl bg-gradient-to-br ${prop.gradient} flex items-center justify-center mb-6 shadow-lg`}

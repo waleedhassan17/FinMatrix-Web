@@ -157,7 +157,7 @@ export function Hero() {
             {/* Headline */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight"
             >
               <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 Cloud Accounting
@@ -171,7 +171,7 @@ export function Hero() {
             {/* Subheadline */}
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-xl text-gray-600 max-w-xl leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed"
             >
               FBR-compliant accounting software that saves you{' '}
               <span className="text-blue-600 font-semibold">40%</span>{' '}
@@ -266,7 +266,7 @@ export function Hero() {
             variants={dashboardVariants}
             initial="hidden"
             animate="visible"
-            className="relative lg:pl-8"
+            className="relative lg:pl-8 hidden md:block"
           >
             {/* Main Dashboard Card */}
             <motion.div
@@ -297,7 +297,7 @@ export function Hero() {
               </motion.div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
                 <motion.div
                   className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-4"
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -306,7 +306,7 @@ export function Hero() {
                   whileHover={{ scale: 1.02 }}
                 >
                   <p className="text-sm text-blue-600 font-medium">Revenue</p>
-                  <p className="text-2xl font-bold text-blue-700 mt-1">PKR 2.4M</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-700 mt-1">PKR 2.4M</p>
                   <p className="text-xs text-blue-500 mt-1 flex items-center gap-1">
                     <span className="text-green-500">↑</span>
                     12% from last month
@@ -320,7 +320,7 @@ export function Hero() {
                   whileHover={{ scale: 1.02 }}
                 >
                   <p className="text-sm text-purple-600 font-medium">Expenses</p>
-                  <p className="text-2xl font-bold text-purple-700 mt-1">PKR 890K</p>
+                  <p className="text-xl sm:text-2xl font-bold text-purple-700 mt-1">PKR 890K</p>
                   <p className="text-xs text-purple-500 mt-1 flex items-center gap-1">
                     <span className="text-green-500">↓</span>
                     5% from last month

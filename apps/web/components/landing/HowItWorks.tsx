@@ -80,7 +80,7 @@ export function HowItWorks() {
         </motion.div>
 
         {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-16">
           {steps.map((step, index) => (
             <motion.div
               key={index}
