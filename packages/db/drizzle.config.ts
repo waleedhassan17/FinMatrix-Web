@@ -15,6 +15,7 @@ export default {
       ? `${connectionString}?sslmode=require` 
       : connectionString,
   },
+  tablesFilter: ['!pg_stat_*'],
   verbose: true,
   strict: true,
 } satisfies Config;
