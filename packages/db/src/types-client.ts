@@ -36,12 +36,9 @@ export {
 
 // Dashboard types - safe for client
 export type {
-  WidgetType,
   WidgetId,
   WidgetConfig,
-  DashboardWidget,
-  DashboardLayoutItem,
-  DashboardLayout,
+  DashboardConfig,
   AccountBalance,
   Transaction,
   FinancialMetric,
